@@ -59,24 +59,23 @@ const CustomerForm: React.FC<CustomerFormInterface> = ({}: CustomerFormInterface
     email: '',
   })
 
+  const [formInitialized, setFormInitialized] = useState(false)
+
   useEffect(() => {
     if (singleCustomer?.data) {
-      console.log('Fetched data:', singleCustomer.data)
       const {
         first_name = '',
         last_name = '',
         email = '',
       } = singleCustomer.data
-      console.log('Extracted values:', first_name, last_name, email)
-      setInitialValues({
-        first_name,
-        last_name,
-        email,
-      })
-    } else {
-      console.log('No data fetched')
+      setInitialValues({ first_name, last_name, email })
+      setFormInitialized(true)
     }
   }, [singleCustomer])
+
+  if (!formInitialized) {
+    return <div>Loading...</div> // Or a loading indicator while data is being fetched
+  }
 
   const handleSubmit = async (values: any) => {
     try {
@@ -114,7 +113,7 @@ const CustomerForm: React.FC<CustomerFormInterface> = ({}: CustomerFormInterface
   // }
 
   return (
-    <div className="w-full sm:p-12">
+    <div className="w-full p-4 sm:p-12 ">
       <h1 className="text-2xl font-medium mb-8 text-center">
         {id ? 'Edit Customer' : 'Add Customer'}
       </h1>
