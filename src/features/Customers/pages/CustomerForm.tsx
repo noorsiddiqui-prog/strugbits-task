@@ -60,6 +60,7 @@ const CustomerForm: React.FC<CustomerFormInterface> = ({}: CustomerFormInterface
   })
 
   const [formInitialized, setFormInitialized] = useState(false)
+  const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([])
 
   useEffect(() => {
     if (singleCustomer?.data) {
@@ -84,6 +85,7 @@ const CustomerForm: React.FC<CustomerFormInterface> = ({}: CustomerFormInterface
           first_name: values.first_name,
           last_name: values.last_name,
           email: values.email,
+          avatar: uploadedFiles,
         }
 
         const { data } = await addCustomer(newCustomerData).unwrap()
@@ -93,6 +95,7 @@ const CustomerForm: React.FC<CustomerFormInterface> = ({}: CustomerFormInterface
           first_name: values.first_name || '',
           last_name: values.last_name || '',
           email: values.email || '',
+          avatar: uploadedFiles || '',
         }
         const response = await updateCustomer(updateCustomerData)
         if ('data' in response) {
@@ -112,6 +115,11 @@ const CustomerForm: React.FC<CustomerFormInterface> = ({}: CustomerFormInterface
   //   email: singleCustomer?.data?.email || '',
   // }
 
+  const handleDrop = (acceptedFiles: File[]) => {
+    console.log(acceptedFiles)
+    setUploadedFiles(acceptedFiles)
+  }
+
   return (
     <div className="w-full p-4 sm:p-12 ">
       <h1 className="text-2xl font-medium mb-8 text-center">
@@ -122,6 +130,8 @@ const CustomerForm: React.FC<CustomerFormInterface> = ({}: CustomerFormInterface
         initialValues={initialValues}
         onSubmit={handleSubmit}
         isEditMode={id ? true : false}
+        handleDrop={handleDrop}
+        uploadedFiles={uploadedFiles}
       />
     </div>
   )

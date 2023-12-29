@@ -162,6 +162,8 @@ interface FieldGeneratorProps {
   onSubmit: (values: any) => void
   initialValues: { [key: string]: any }
   isEditMode?: boolean
+  handleDrop: (acceptedFiles: File[]) => void
+  uploadedFiles?: any[]
 }
 
 const FieldGenerator: React.FC<FieldGeneratorProps> = ({
@@ -169,6 +171,8 @@ const FieldGenerator: React.FC<FieldGeneratorProps> = ({
   onSubmit,
   initialValues,
   isEditMode = false,
+  handleDrop,
+  uploadedFiles,
 }) => {
   const validationSchema = Yup.object().shape(
     fieldConfig.reduce((acc: any, field) => {
@@ -181,13 +185,6 @@ const FieldGenerator: React.FC<FieldGeneratorProps> = ({
       >
     }, {}),
   )
-
-  const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([])
-
-  const handleDrop = (acceptedFiles: File[]) => {
-    console.log(acceptedFiles)
-    setUploadedFiles(acceptedFiles)
-  }
 
   return (
     <Formik
